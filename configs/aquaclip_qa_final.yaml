@@ -1,0 +1,82 @@
+model_name: aquaclip_qa_final
+paper_name: AquaCLIP-QA
+title: "AquaCLIP-QA: Physics-Calibrated Vision-Language Fusion for Domain-Robust No-Reference Underwater Image Quality Assessment"
+
+inputs:
+  clip_embedding_dim: 512
+  attribute_dim: 7
+  physics_dim: 18
+  attributes:
+    - color
+    - visibility
+    - turbidity
+    - sharpness
+    - illumination
+    - naturalness
+    - artifact
+
+model:
+  visual_quality_prior_encoder:
+    type: frozen_clip_image_embedding
+    role: main_quality_ranking_prior
+  underwater_attribute_probe:
+    type: clip_prompt_attribute_scores
+    role: interpretable_auxiliary_probe
+  physics_inspired_degradation_encoder:
+    type: handcrafted_underwater_degradation_features
+    role: strict_generalization_and_score_alignment_cue
+  physics_guided_attribute_calibration:
+    enabled: true
+    formula: attr_gate = sigmoid(MLP(physics)); attr_calibrated = attr * attr_gate
+  main_fusion:
+    name: physics_calibrated_concat_fusion
+    fusion: concat
+    use_clip: true
+    use_attribute: true
+    use_physics: true
+    use_attribute_gate: true
+    use_reliability_for_prediction: false
+  prediction_head:
+    target: normalized_mos
+    type: mlp
+  reliability_explanation_branch:
+    enabled: true
+    formula: r = softmax(MLP([z_clip,z_attr,z_phys]))
+    outputs:
+      - r_clip
+      - r_attr
+      - r_phys
+      - attribute_gates
+    use_for_prediction_score: false
+    training: auxiliary_quality_head
+  hybrid_fusion:
+    enabled_by_default: false
+    role: experimental_ablation_only
+
+training:
+  default_variant: aquaclip-final
+  implementation_variant: aquaclip-final
+  regression_loss: smooth_l1
+  ranking_loss: pairwise
+  rank_weight: 0.05
+  reliability_aux_weight: 0.02
+  regression_only_variant: regression-only
+
+calibration:
+  type: positive_slope_affine
+  formula: y_cal = a * y_pred + b
+  slope_constraint: a > 0
+  use_case: optional_few_shot_target_domain_score_alignment
+  default_ratios:
+    - 0.01
+    - 0.05
+    - 0.10
+    - 0.20
+
+final_model_selection:
+  main_model: v1_concat_or_aquaclip_final_concat_path
+  reason: best_strict_split_generalization
+  in_domain_strong_variant: regression-only
+  cross_dataset_analysis_variant: full
+  interpretability: reliability_branch_and_attribute_gates
+  supplementary_variant: hybrid-fusion

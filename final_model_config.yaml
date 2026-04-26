@@ -1,0 +1,40 @@
+model_name: aquaclip_qa_final
+implementation:
+  train_script: aquaclip/train.py
+  variant: aquaclip-final
+  prediction_path: concat_fusion
+  reliability_for_prediction: false
+  reliability_explainer: true
+  hybrid_fusion_default: false
+
+branches:
+  clip:
+    dim: 512
+    role: visual_quality_prior_encoder
+  attribute:
+    dim: 7
+    role: underwater_attribute_probe
+    calibrated_by_physics: true
+  physics:
+    dim: 18
+    role: physics_inspired_degradation_encoder
+
+loss:
+  regression: smooth_l1
+  ranking: pairwise
+  rank_weight: 0.05
+  reliability_aux_weight: 0.02
+  regression_only_variant: regression-only
+
+calibration:
+  optional_stage: positive_slope_affine
+  formula: y_cal = a * y_pred + b
+  slope: positive
+
+outputs:
+  score: normalized_quality_score_from_concat_head
+  explanation:
+    - r_clip
+    - r_attr
+    - r_phys
+    - attribute_gates

@@ -1,0 +1,58 @@
+AquaCLIP-QA Final Model
+=======================
+
+Final method name
+-----------------
+AquaCLIP-QA: Physics-Calibrated Vision-Language Fusion for Domain-Robust No-Reference Underwater Image Quality Assessment
+
+Final model decision
+--------------------
+The final scoring model uses the concat-based physics-calibrated fusion path, because v1 concat gives the best strict split generalization among the tested v1 variants. The reliability branch is retained for interpretability and failure analysis, but it is not used as the default score fusion mechanism. Hybrid fusion is kept only as an experimental ablation.
+
+Main scoring path
+-----------------
+Input underwater image
+  -> CLIP image embedding branch: 512-d visual prior
+  -> Attribute prompt branch: 7-d underwater attribute probe
+  -> Physics feature branch: 18-d underwater degradation cue
+  -> Physics-guided attribute calibration:
+       attr_gate = sigmoid(MLP(physics))
+       attr_calibrated = attr * attr_gate
+  -> Projection of CLIP, calibrated attribute, and physics features
+  -> Concatenate projected features
+  -> MLP quality head
+  -> Normalized quality score
+
+Explanation path
+----------------
+Projected CLIP / attribute / physics features
+  -> Reliability analyzer:
+       r = softmax(MLP([z_clip, z_attr, z_phys]))
+  -> r_clip, r_attr, r_phys
+  -> Attribute gates
+
+The reliability weights are saved for qualitative analysis and failure analysis. They do not control the final prediction score in the final model. In the implementation, this explanation branch is trained through an auxiliary quality head so that the reliability weights are not random, while the reported final score still comes from the concat prediction head.
+
+Training
+--------
+Default final variant: aquaclip-final
+Main prediction loss: SmoothL1 regression + pairwise ranking loss
+Reliability explanation auxiliary loss: small weighted SmoothL1 + pairwise ranking loss
+Regression-only variant: regression-only
+
+Calibration
+-----------
+Optional target-domain calibration:
+  y_cal = a * y_pred + b, with a > 0
+
+This positive-slope affine calibration is used only when a small number of target-domain labels are available. It corrects MOS scale shifts while preserving the prediction order.
+
+Relationship to earlier variants
+--------------------------------
+v0 Ridge: preliminary baseline
+v1 full reliability: reliability-weighted scoring path, useful for cross-dataset ranking analysis
+v1 regression-only: strong in-domain variant
+v1 concat: strict split winner and basis of the final scoring path
+v1 hybrid: supplementary ablation only
+positive affine calibration: final optional cross-domain score alignment stage
+reliability visualization: final interpretability analysis
