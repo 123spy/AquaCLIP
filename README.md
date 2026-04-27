@@ -1,8 +1,8 @@
 # AquaCLIP-QA
 
-AquaCLIP-QA is a no-reference underwater image quality assessment model. It fuses CLIP image embeddings, underwater attribute prompts, and physics-inspired degradation features to predict normalized MOS scores. The default scoring path uses physics-calibrated concat fusion; the reliability branch is kept for explanation.
+AquaCLIP-QA 是一个无参考水下图像质量评价模型。模型将 CLIP 图像表征、水下属性 prompt 分数和物理退化特征融合起来，用于预测归一化 MOS 质量分数。默认主预测路径采用 physics-calibrated concat fusion；reliability 分支保留用于解释分析。
 
-## Model
+## 模型结构
 
 ![AquaCLIP-QA architecture](docs/figures/aquaclip_architecture.svg)
 
@@ -10,25 +10,25 @@ AquaCLIP-QA is a no-reference underwater image quality assessment model. It fuse
 
 ![Positive affine calibration](docs/figures/calibration_pipeline.svg)
 
-## Project Layout
+## 目录结构
 
 ```text
 aquaclip/
-  model.py                  # AquaCLIP-QA model definitions
-  data.py                   # feature loading and normalization
-  train.py                  # training / evaluation entry point
+  model.py                  # 模型结构
+  data.py                   # 特征读取与归一化
+  train.py                  # 训练与评估入口
   calibration.py            # positive-slope affine calibration
-  configs/                  # model configs
-  docs/                     # architecture notes and figures
-  reports/                  # compact result tables
-  outputs/                  # trained models and predictions
+  configs/                  # 配置文件
+  docs/                     # 架构说明和示意图
+  reports/                  # 汇总结果表
+  outputs/                  # 训练输出、模型和预测结果
 ```
 
-## Main In-Domain Benchmark
+## 主结果
 
-Unified test split, 3541 images unless noted. PLCC and NRMSE are computed after linear score mapping to normalized MOS.
+统一 in-domain test split，共 3541 张图像。PLCC 和 NRMSE 使用线性映射到 normalized MOS 后计算。
 
-| Method | SRCC | PLCC | NRMSE |
+| 方法 | SRCC | PLCC | NRMSE |
 |---|---:|---:|---:|
 | AquaCLIP-QA | **0.8241** | **0.8347** | **0.1161** |
 | LIQE | 0.4419 | 0.4645 | 0.1921 |
@@ -43,20 +43,22 @@ Unified test split, 3541 images unless noted. PLCC and NRMSE are computed after 
 | MANIQA | 0.2429 | 0.2688 | 0.2135 |
 | UIQM | 0.1629 | 0.2236 | 0.2196 |
 
-Detailed tables are in `reports/`.
+更完整的逐数据集结果见 `reports/`。
 
-## Cross-Dataset Calibration
+## 跨库标定
 
-| Setting | SRCC | PLCC | NRMSE |
+| 设置 | SRCC | PLCC | NRMSE |
 |---|---:|---:|---:|
-| No calibration | 0.3876 | 0.3875 | 0.2349 |
+| 不标定 | 0.3876 | 0.3875 | 0.2349 |
 | + 1% positive affine | 0.3881 | 0.3879 | 0.2024 |
 | + 5% positive affine | 0.3874 | 0.3874 | 0.1972 |
 
-## Quick Start
+## 快速运行
+
+在本仓库根目录运行：
 
 ```powershell
-& C:\Users\OUC\.conda\envs\python\python.exe aquaclip\train.py `
+python aquaclip\train.py `
   --train uid2021:v0\outputs\uid2021_clip_scores.csv:v0\outputs\uid2021_physics.csv `
   --output-dir aquaclip\outputs\uid2021 `
   --experiment-name aquaclip_final_uid2021 `
@@ -64,4 +66,4 @@ Detailed tables are in `reports/`.
   --device auto
 ```
 
-Useful variants: `aquaclip-final`, `concat`, `full`, `regression-only`, `hybrid-fusion`.
+常用模型变体：`aquaclip-final`、`concat`、`full`、`regression-only`、`hybrid-fusion`。
