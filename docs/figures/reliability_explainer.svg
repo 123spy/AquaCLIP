@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="430" viewBox="0 0 1040 430">
+  <defs>
+    <style>
+      .title{font:700 24px Arial,Helvetica,sans-serif;fill:#102033}
+      .label{font:600 15px Arial,Helvetica,sans-serif;fill:#102033}
+      .small{font:13px Arial,Helvetica,sans-serif;fill:#405166}
+      .box{fill:#ffffff;stroke:#284b63;stroke-width:1.6;rx:8}
+      .blue{fill:#e9f3ff;stroke:#276fbf}
+      .green{fill:#ecf8ef;stroke:#27864d}
+      .gold{fill:#fff6df;stroke:#a87600}
+      .purple{fill:#f3ecff;stroke:#7656b8}
+      .arrow{stroke:#23384f;stroke-width:2;fill:none;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#23384f"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="430" fill="#f7f9fc"/>
+  <text x="40" y="48" class="title">Reliability Explanation Branch</text>
+  <text x="40" y="76" class="small">The reliability branch explains branch confidence; it is not used as the default prediction path.</text>
+
+  <rect x="70" y="125" width="180" height="72" class="box blue"/>
+  <text x="118" y="157" class="label">z_clip</text>
+  <text x="103" y="180" class="small">visual prior feature</text>
+
+  <rect x="70" y="230" width="180" height="72" class="box gold"/>
+  <text x="118" y="262" class="label">z_attr</text>
+  <text x="94" y="285" class="small">calibrated attributes</text>
+
+  <rect x="70" y="335" width="180" height="72" class="box green"/>
+  <text x="118" y="367" class="label">z_phys</text>
+  <text x="103" y="390" class="small">physics feature</text>
+
+  <rect x="360" y="210" width="230" height="90" class="box purple"/>
+  <text x="407" y="245" class="label">Reliability MLP</text>
+  <text x="398" y="270" class="small">softmax([r_clip, r_attr, r_phys])</text>
+
+  <rect x="710" y="125" width="210" height="72" class="box blue"/>
+  <text x="770" y="157" class="label">r_clip</text>
+  <text x="750" y="180" class="small">CLIP confidence</text>
+
+  <rect x="710" y="230" width="210" height="72" class="box gold"/>
+  <text x="770" y="262" class="label">r_attr</text>
+  <text x="735" y="285" class="small">attribute confidence</text>
+
+  <rect x="710" y="335" width="210" height="72" class="box green"/>
+  <text x="770" y="367" class="label">r_phys</text>
+  <text x="740" y="390" class="small">physics confidence</text>
+
+  <path d="M250 161 C300 161 310 232 360 240" class="arrow"/>
+  <path d="M250 266 L360 260" class="arrow"/>
+  <path d="M250 371 C300 371 310 288 360 278" class="arrow"/>
+  <path d="M590 255 C650 255 650 161 710 161" class="arrow"/>
+  <path d="M590 255 L710 266" class="arrow"/>
+  <path d="M590 255 C650 255 650 371 710 371" class="arrow"/>
+</svg>

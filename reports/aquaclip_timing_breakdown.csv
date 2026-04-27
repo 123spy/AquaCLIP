@@ -1,0 +1,5 @@
+stage,elapsed_sec,returncode,command,n_images,images_per_sec
+physics_feature_extraction,247.4942384000169,0,C:\Users\OUC\.conda\envs\python\python.exe v0/extract_physics_features.py --manifest run\benchmark_manifest.csv --output run\timing\aquaclip\benchmark_physics.csv,3541,14.307403771868
+clip_embedding_attribute_extraction,174.83261919999495,0,C:\Users\OUC\.conda\envs\python\python.exe v0/run_clip_zeroshot.py --manifest run\benchmark_manifest.csv --output run\timing\aquaclip\benchmark_clip_scores.csv --mode both --include-embedding,3541,20.25365756231891
+cached_feature_load_and_merge,0.507546899956651,0,pandas read_csv + merge benchmark_clip_scores.csv and benchmark_physics.csv,3541,6976.69515921077
+final_concat_head_inference_cached_features,0.1470794000197202,0,aquaclip final model forward on cached standardized features,3541,24075.43136241532
