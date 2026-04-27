@@ -1,14 +1,10 @@
 # AquaCLIP-QA
 
-AquaCLIP-QA 是一个无参考水下图像质量评价模型。模型将 CLIP 图像表征、水下属性 prompt 分数和物理退化特征融合起来，用于预测归一化 MOS 质量分数。默认主预测路径采用 physics-calibrated concat fusion；reliability 分支保留用于解释分析。
+AquaCLIP-QA 是一个无参考水下图像质量评价模型。模型融合 CLIP 图像表征、水下属性 prompt 分数和物理退化特征，用于预测归一化 MOS 质量分数。默认主预测路径采用 concat fusion，reliability 分支用于解释分析。
 
 ## 模型结构
 
-![AquaCLIP-QA architecture](docs/figures/aquaclip_architecture.svg)
-
-![Reliability explainer](docs/figures/reliability_explainer.svg)
-
-![Positive affine calibration](docs/figures/calibration_pipeline.svg)
+![模型结构图](docs/images/模型结构图.png)
 
 ## 目录结构
 
@@ -19,7 +15,7 @@ aquaclip/
   train.py                  # 训练与评估入口
   calibration.py            # positive-slope affine calibration
   configs/                  # 配置文件
-  docs/                     # 架构说明和示意图
+  docs/                     # 说明文档和图片
   reports/                  # 汇总结果表
   outputs/                  # 训练输出、模型和预测结果
 ```
