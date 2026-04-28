@@ -1,2 +1,0 @@
-experiment,variant,model_role,device,epochs_ran,n_train,n_test,rank_weight,reliability_aux_weight,test_srcc,test_plcc,test_nrmse,r_clip_mean,r_attr_mean,r_phys_mean
-aquaclip_final_smoke_uid2021,aquaclip-final,final-main-concat-with-reliability-explainer,cuda,3,720,180,0.05,0.02,0.6241180283342078,0.6401110755931855,0.18366121691121087,0.2562101185321808,0.0646735206246376,0.6791163682937622
