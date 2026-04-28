@@ -1,0 +1,37 @@
+{
+  "experiment": "aquaclip_final_uied_fold10",
+  "protocol": "in-domain",
+  "variant": "aquaclip-final",
+  "device": "cuda",
+  "epochs_ran": 48,
+  "n_train": 800,
+  "n_test": 200,
+  "feature_dims": {
+    "clip": 512,
+    "attr": 7,
+    "phys": 18
+  },
+  "few_shot_ratio": null,
+  "rank_weight": 0.05,
+  "reliability_aux_weight": 0.02,
+  "model_role": "final-main-concat-with-reliability-explainer",
+  "train": {
+    "srcc": 0.8286651452769126,
+    "plcc": 0.8500905391565599,
+    "krcc": 0.6443347843065683,
+    "rmse": 0.11635330722475616,
+    "nrmse": 0.11635330722475616
+  },
+  "test": {
+    "srcc": 0.5217779684502273,
+    "plcc": 0.591607407244151,
+    "krcc": 0.36843824705774153,
+    "rmse": 0.18273768887113775,
+    "nrmse": 0.1919179316233091
+  },
+  "reliability_mean_test": {
+    "r_clip": 0.7032075524330139,
+    "r_attr": 0.06698881834745407,
+    "r_phys": 0.22980357706546783
+  }
+}

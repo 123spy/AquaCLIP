@@ -1,0 +1,2 @@
+dataset,experiment,variant,device,epochs_ran,n_train,n_test,test_srcc,test_plcc,test_krcc,test_rmse_norm,test_nrmse,test_rmse_mos_0_95,r_clip_mean,r_attr_mean,r_phys_mean
+LUIQD,aquaclip_final_luiqd,aquaclip-final,cuda,34,51350,12820,0.8794594572941057,0.8725864764656055,0.7073029597252025,0.066010884031523,0.06746167397436417,6.4088590275645965,0.42217299342155457,0.23925261199474335,0.3385743796825409

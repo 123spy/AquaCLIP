@@ -1,0 +1,37 @@
+{
+  "experiment": "progress_smoke_uied_fold01",
+  "protocol": "in-domain",
+  "variant": "aquaclip-final",
+  "device": "cuda",
+  "epochs_ran": 2,
+  "n_train": 800,
+  "n_test": 200,
+  "feature_dims": {
+    "clip": 512,
+    "attr": 7,
+    "phys": 18
+  },
+  "few_shot_ratio": null,
+  "rank_weight": 0.05,
+  "reliability_aux_weight": 0.02,
+  "model_role": "final-main-concat-with-reliability-explainer",
+  "train": {
+    "srcc": 0.6328517303398847,
+    "plcc": 0.6713114985665324,
+    "krcc": 0.45607765584176413,
+    "rmse": 0.1655105261832114,
+    "nrmse": 0.1655105261832114
+  },
+  "test": {
+    "srcc": 0.37689595507084306,
+    "plcc": 0.45676549214863427,
+    "krcc": 0.2572993617769737,
+    "rmse": 0.2034251405267991,
+    "nrmse": 0.20414591894909512
+  },
+  "reliability_mean_test": {
+    "r_clip": 0.31661665439605713,
+    "r_attr": 0.05243264138698578,
+    "r_phys": 0.6309506893157959
+  }
+}

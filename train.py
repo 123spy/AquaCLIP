@@ -15,6 +15,7 @@ import torch
 from scipy import stats
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
+from tqdm.auto import tqdm
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
@@ -84,6 +85,7 @@ def parse_args():
     parser.add_argument("--reliability-aux-weight", type=float, default=0.02)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto")
+    parser.add_argument("--no-progress", action="store_true")
     return parser.parse_args()
 
 
@@ -231,7 +233,14 @@ def main():
     train_loader = make_loader(train_arrays, fit_idx, args.batch_size, shuffle=True)
     val_loader = make_loader(train_arrays, val_idx, args.batch_size, shuffle=False)
 
-    for epoch in range(1, args.epochs + 1):
+    progress = tqdm(
+        range(1, args.epochs + 1),
+        desc=f"{args.experiment_name} ({args.variant})",
+        unit="epoch",
+        dynamic_ncols=True,
+        disable=args.no_progress,
+    )
+    for epoch in progress:
         model.train()
         total = 0.0
         n_seen = 0
@@ -274,8 +283,14 @@ def main():
             best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
         else:
             bad_epochs += 1
-            if bad_epochs >= args.patience:
-                break
+        progress.set_postfix(
+            train=f"{train_loss:.4f}",
+            val=f"{val_loss:.4f}",
+            best=f"{best_val:.4f}",
+            bad=f"{bad_epochs}/{args.patience}",
+        )
+        if bad_epochs >= args.patience:
+            break
 
     if best_state is not None:
         model.load_state_dict(best_state)
