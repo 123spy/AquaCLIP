@@ -20,10 +20,6 @@ AquaCLIP-QA 是一个无参考水下图像质量评价模型，用于预测归�
 
 <img src="docs/images/预测模块.png" alt="AquaCLIP-QA 预测模块" style="zoom:50%;" />
 
-### 解释分支
-
-<img src="docs/images/解释分支.png" alt="AquaCLIP-QA 解释分支" style="zoom:50%;" />
-
 ## 目录结构
 
 ```text
